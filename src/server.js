@@ -1,12 +1,14 @@
 import express from "express";
 import axios from "axios";
 import bodyParser from "body-parser";
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 const port = 3000;
 
  
-const appid = ""; // Replace with your actual OpenWeatherMap API key
+const appid = process.env.API_KEY;
 
 app.set('view engine', 'ejs');
 app.use(express.static("public"));
