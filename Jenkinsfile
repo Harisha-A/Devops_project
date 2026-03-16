@@ -5,7 +5,7 @@ pipeline {
 
         stage('Clone Repository') {
             steps {
-                git 'https://github.com/Harisha-A/weather-app.git'
+                git 'https://github.com/Harisha-A/Weather-app.git'
             }
         }
 
