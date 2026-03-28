@@ -2,16 +2,21 @@ import express from "express";
 import axios from "axios";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
+
 dotenv.config();
 
 const app = express();
 const port = 3000;
-
- 
 const appid = process.env.API_KEY;
 
-app.set('view engine', 'ejs');
-app.use(express.static("public"));
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "src", "views"));
+app.use(express.static(path.join(__dirname, "src", "public")));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
@@ -22,8 +27,7 @@ app.post("/weather", async (req, res) => {
   const city = req.body.city;
 
   try {
-     
-    const geoResponse = await axios.get(`https://api.openweathermap.org/geo/1.0/direct`, {
+    const geoResponse = await axios.get("https://api.openweathermap.org/geo/1.0/direct", {
       params: {
         q: city,
         limit: 1,
@@ -37,12 +41,11 @@ app.post("/weather", async (req, res) => {
 
     const { lat, lon } = geoResponse.data[0];
 
-     
     const weatherResponse = await axios.get("https://api.openweathermap.org/data/2.5/weather", {
       params: {
         lat,
         lon,
-        appid,
+        appid: appid,
         units: "metric"
       }
     });
@@ -68,5 +71,5 @@ app.post("/weather", async (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`App running on port ${port}`);
+  console.log(`App running on port http://localhost:${port}`);
 });
