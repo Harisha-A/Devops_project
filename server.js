@@ -70,6 +70,9 @@ app.post("/weather", async (req, res) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`App running on port http://localhost:${port}`);
-});
+if (process.env.NODE_ENV !== "test") {
+  app.listen(port, () => {
+    console.log(`App running on port ${port}`);
+  });
+}
+export default app;

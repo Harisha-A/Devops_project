@@ -10,19 +10,26 @@
                  bat 'dir'
              }
          }
- 
+
+         stage('Test') {
+             steps {
+                 bat 'npm install'
+                 bat 'npm test'
+             }
+         }
+
          stage('Clean Docker Cache') {
              steps {
                  bat 'docker system prune -af'
              }
          }
- 
+
          stage('Build Docker Image') {
              steps {
                  bat 'docker build --no-cache -t %IMAGE_NAME%:%IMAGE_TAG% .'
              }
          }
- 
+
          stage('Login & Push Docker Image') {
              steps {
                  withCredentials([usernamePassword(
