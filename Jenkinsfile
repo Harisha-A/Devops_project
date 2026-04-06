@@ -42,6 +42,19 @@
                 }
             }
         }
+
+        stage('Deploy Container') {
+            steps {
+                bat 'docker stop weather-app || exit 0'
+                bat 'docker rm weather-app || exit 0'
+                withCredentials([string(
+                    credentialsId: 'weather-api-key',
+                    variable: 'API_KEY'
+                )]) {
+                    bat 'docker run -d --name weather-app -p 3000:3000 -e API_KEY=%API_KEY% %IMAGE_NAME%:%IMAGE_TAG%'
+                }
+            }
+        }
     }
     post {
         always {
